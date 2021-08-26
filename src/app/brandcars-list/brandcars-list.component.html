@@ -1,0 +1,105 @@
+<div class="container">
+    <div>
+        <button class="btn btn-success" (click)="onModal(add)">Ajouter une nouvelle marque</button>
+        <button class="btn btn-outline-dark" (click)="onChangeViewMode()">Changer de mode d'affichage</button>
+    </div>
+
+    <div class="row row-cols-auto" *ngIf="viewMode === true">
+        <!-- Brand Car Object : Card View-->
+        <div class="card" *ngFor="let brandcar of brandcars">
+            <div class="card-body">
+                <h5 class="card-title">{{ brandcar.brandName }}</h5>
+                <p class="card-text">{{ brandcar.description }}</p>
+                <button id="float-right" class="btn btn-warning" (click)="onModal(modify, brandcar)"> Modifier </button>
+                <button id="float-right"  class=" btn btn-danger" (click)="onModal(remove, brandcar)"> Supprimer </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Brand Car Object : Liste View -->
+    <table class="table table-hover" *ngIf="viewMode === false">
+      <thead>
+        <tr>
+          <th scope="col" class="col-md-2">Nom de la marque</th>
+          <th scope="col" class="col-md-6">Description</th>
+          <th scope="col" class="col-md-2"></th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let brandcar of brandcars">
+        <tr>
+          <td>{{ brandcar.brandName }}</td>
+          <td>{{ brandcar.description }}</td>
+          <td>
+            <button id="float-right" class="btn btn-warning" (click)="onModal(modify, brandcar)"> Modifier </button>
+            <button id="float-right"  class=" btn btn-danger" (click)="onModal(remove, brandcar)"> Supprimer </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+
+<!-- Popup Add / Modify / Delete -->
+<ng-template #add let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"><span id="font-title">Brand Car :</span> Ajouter une marque</h4>
+    <button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="brandForm">
+          <div class="form-group">      
+              <label>Nom de la marque : </label>
+              <input type="text" class="form-control" formControlName="brandName">
+          </div>
+          <div class="form-group">
+              <label>Description : </label>
+              <input type="text" class="form-control" formControlName="description">
+          </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" (click)="modal.close('add')">Ajouter</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #modify let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"><span id="font-title">Brand Car</span> : Modifier</h4>
+    <button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form  [formGroup]="brandForm">
+          <div class="form-group">      
+              <label>Nom de la marque : </label>
+              <input type="text" class="form-control" formControlName="brandName">
+          </div>
+          <div class="form-group">
+              <label>Description : </label>
+              <input type="text" class="form-control" formControlName="description">
+          </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="modal.close('modify')">Modifier</button>
+  </div>
+</ng-template>
+
+<ng-template #remove let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"><span id="font-title">Brand Car</span> : Supprimer</h4>
+    <button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="text-danger"> Êtes vous sûr de vouloir supprimer cette marque ?</p>
+  
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close('remove')">Supprimer</button>
+  </div>
+</ng-template>
